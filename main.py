@@ -8,10 +8,11 @@ from PySide import QtGui, QtCore
 from PySide.phonon import Phonon
 
 from add_ui import Ui_mainWindow
+from catalog_controller import cat_controller
 
-class addWindow(QMainWindow,Ui_mainWindow):
+class addWindow(QMainWindow, Ui_mainWindow):
     """docstring for addWindow"""
-    
+
     def __init__(self):
         super(addWindow, self).__init__()
         #chosen dir path
@@ -49,8 +50,50 @@ class addWindow(QMainWindow,Ui_mainWindow):
         self.btn_play.clicked.connect( self.handlePlayButton )
         self.btn_folder.clicked.connect( self.handleButtonChoose )
         self.btn_nxt.clicked.connect( self.handleNextbutton )
-    
+
+    def handleAddButton(self):
+
+        if self.currentPath == "":
+            return
+
+        year =  self.combo_year.currentText()
+        task = self.combo_task.currentText()
+        ttype = self.combo_type.currentText()
+        quality = self.combo_quality.currentText()
+        false = self.check_false.currentText()
+        location = self.combo_location.currentText()
+        time = self.combo_time.currentText(),
+
+        #validate
+        v_path = move_video(year, task, ttype, location, quality, time)
+        video_data = {
+            'path':v_path,
+            'task':task,
+            'type':ttype,
+            'quality':quality,
+            'location':location,
+            'time':time,
+            'false':str(self.check_false.isChecked()),
+            'pass':str(self.check_pass.isChecked()),
+            'perseen':str(self.slider_seen.value())
+        }
+
+        pass
+
+    def move_video(self, year, task, ttype, location, quality, time):
+        hir_path = os.path.join(self.tree_path, year, task, ttype, location, quality, time)
+        try:
+            if not os.path.exists(hir_path):
+                os.makedirs(hir_path)
+            copy2(self.currentPath,os.path.join(hir_path, os.path.split(self.currentPath)[1]))
+            # os.remove(self.currentPath)
+        except Exception as e:
+            print e.args
+        else:
+            return hir_path
+
     def handleButtonChoose(self):
+        ''' dfdfdfdf '''
         if self.media.state() == Phonon.PlayingState:
             self.media.stop()
         else:
@@ -63,7 +106,7 @@ class addWindow(QMainWindow,Ui_mainWindow):
                         self.pathlist.append( os.path.join(self.path, file) )
             self.handleNextbutton()
             dialog.deleteLater()
-    
+
     def handleNextbutton(self):
         if len(self.pathlist)>0:
             t_path = self.pathlist.pop()
@@ -73,6 +116,8 @@ class addWindow(QMainWindow,Ui_mainWindow):
         else:
             self.label_fileName.setText("No file")
             self.media.stop()
+            self.pathlist.clear()
+            self.currentPath = ""
             self.media.clear()
             # TO DO show warniing
 
@@ -111,14 +156,6 @@ class addWindow(QMainWindow,Ui_mainWindow):
         self.combo_year.addItems(self.year)
         self.combo_type.addItems(self.type)
 
-    def move_video(self,year,task,ttype,quality,time):
-        hir_path = os.path.join(self.tree_path,year,task,ttype,quality,time)
-        try:
-            if not os.path.exists(hir_path):
-                os.makedirs(hir_path)
-            shutil.copy2(self.currentPath,os.path.join(hir_path, os.path.split(currentPath)[1] ))
-        except Exception, e:
-            print e.args
 
 
 if __name__ == '__main__':
