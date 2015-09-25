@@ -20,6 +20,8 @@ class cat_controller(object):
         except IOError as e:
             print " Error : couldnt find a databse, creating new"
             self.root = ET.Element("catalogData",{'year':year})
+            fobj = open(path.join(self.rootPath,year+".xml"),'w')
+            fobj.write("<catalogData year='"+year+"'>\n</catalogData>")
         self.current_year = year
         print year
 
@@ -33,28 +35,21 @@ class cat_controller(object):
         for field in self.fields:
             t_elem = ET.SubElement(video_new_elem,field)
             t_elem.text = video_data[field]
-        self.root.append(video_new_elem)
-        self.save_db()
-
-    def save_db(self):
-        try:
-            rough_string = ET.tostring(self.root, 'utf-8')
-            reparsed = minidom.parseString(rough_string)
-            t_tree = reparsed.toprettyxml(indent="\t")
-            f = open(path.join(self.rootPath,self.current_year+".xml"),'w')
-            f.write(t_tree)
-        except Exception, e:
-            print "Error : " + str(e)
+        self.save_db(video_new_elem)
 
     def save_db(self,node):
-        rough_string = ET.tostring(node, 'utf-8')
-        reparsed = minidom.parseString(rough_string)
-        t_tree = reparsed.toprettyxml(indent="\t")
-        os.system("sed '$d' "path.join(self.rootPath,self.current_year+".xml"))
-        f = open(path.join(self.rootPath,self.current_year+".xml"),'a')
-        f.write(t_tree)
-        f.write("</catalogData>")
+        try:
+            rough_string = ET.tostring(node, 'utf-8')
+            reparsed = minidom.parseString(rough_string)
+            t_tree = reparsed.toprettyxml(indent="\t")
+            t_tree = '\n'.join(t_tree.split('\n')[1:])
+            system("sed -i '$d' " + path.join(self.rootPath,self.current_year+".xml"))
+            f = open(path.join(self.rootPath,self.current_year+".xml"),'a')
+            f.write(t_tree)
+            f.write("</catalogData>")
+        except Exception, e:
+            print "Error cant save DB : " + str(e)
 
 if __name__ == '__main__':
     test = cat_controller()
-    test.init_db("2015")
+    test.init_db("2011")
