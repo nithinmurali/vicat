@@ -85,7 +85,6 @@ class addWindow(QMainWindow, Ui_mainWindow):
 
     def move_video(self, year, task, ttype, location, quality, time):
         hir_path = os.path.join(self.tree_path, str(year), str(task), str(ttype), str(location), str(quality), str(time))
-        print hir_path
         try:
             if not os.path.exists(hir_path):
                 os.makedirs(hir_path)
