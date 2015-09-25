@@ -3,7 +3,7 @@
 ####     author- @nithinmurali
 ---------------------------------------
 
-dependencies - python 2.70,pyside,qt,sd
+dependencies - python 2.7,pyside,sed
 
 tested only in ubunut 14.04 LTS
 
@@ -20,3 +20,6 @@ TODO
 --------
 search function
 variabel filename for copied files
+adding tags to video
+tags in form
+find files recurselvy

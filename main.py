@@ -1,7 +1,8 @@
+#!/usr/bin/python
+
 import sys
 import os
 from shutil import copy2
-from string import split
 
 from PySide.QtGui import *
 from PySide.QtCore import *
@@ -26,9 +27,6 @@ class addWindow(QMainWindow, Ui_mainWindow):
         self.task = []
         #final tree relative path
         self.tree_path = os.path.join(os.getcwd(),'data')
-
-        #database path
-        self.db_path = ''
 
         #db controller
         self.controller = cat_controller()
@@ -68,6 +66,8 @@ class addWindow(QMainWindow, Ui_mainWindow):
 
         #validate
         v_path = self.move_video(year, task, ttype, location, quality, time)
+        v_path = os.path.relpath(v_path)
+        print v_path
         video_data = {
             'path':v_path,
             'year':year,
@@ -76,6 +76,7 @@ class addWindow(QMainWindow, Ui_mainWindow):
             'quality':quality,
             'location':location,
             'time':time,
+            'tags':str(self.line_tags.text()),
             'false':str(self.check_false.isChecked()),
             'pass':str(self.check_pass.isChecked()),
             'perseen':str(self.slider_seen.value())
@@ -91,7 +92,7 @@ class addWindow(QMainWindow, Ui_mainWindow):
                 os.makedirs(hir_path)
             num = len([name for name in os.listdir(hir_path) if os.path.isfile(os.path.join(hir_path, name))])
             copy2(self.currentPath,os.path.join(hir_path, os.path.split(self.currentPath)[1]))
-            os.remove(self.currentPath)
+            # os.remove(self.currentPath)
         except Exception as e:
             print e.args
         else:

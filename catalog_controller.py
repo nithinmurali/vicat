@@ -35,6 +35,10 @@ class cat_controller(object):
         for field in self.fields:
             t_elem = ET.SubElement(video_new_elem,field)
             t_elem.text = video_data[field]
+        t_tags = video_data['tags'].split(',')
+        for tag in t_tags:
+            t_elem = ET.SubElement(video_new_elem,'tag')
+            t_elem.text = str(tag)
         self.save_db(video_new_elem)
 
     def save_db(self,node):
