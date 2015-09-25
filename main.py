@@ -1,6 +1,7 @@
 import sys
 import os
 from shutil import copy2
+from string import split
 
 from PySide.QtGui import *
 from PySide.QtCore import *
@@ -88,8 +89,9 @@ class addWindow(QMainWindow, Ui_mainWindow):
         try:
             if not os.path.exists(hir_path):
                 os.makedirs(hir_path)
+            num = len([name for name in os.listdir(hir_path) if os.path.isfile(os.path.join(hir_path, name))])
             copy2(self.currentPath,os.path.join(hir_path, os.path.split(self.currentPath)[1]))
-            # os.remove(self.currentPath)
+            os.remove(self.currentPath)
         except Exception as e:
             print e.args
         else:
@@ -150,7 +152,7 @@ class addWindow(QMainWindow, Ui_mainWindow):
         self.quality = ['bad','okey','good']
         self.time = ['morning', 'evening', 'night']
         self.type = ['testing','debug']
-        self.year = [ str(x) for x in range(2011,2020) ]
+        self.year = [ str(x) for x in range(2011,2018) ]
 
     def setValues(self):
         self.combo_task.addItems(self.task)
