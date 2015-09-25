@@ -10,7 +10,7 @@ from PySide import QtGui, QtCore
 from PySide.phonon import Phonon
 
 from add_ui import Ui_mainWindow
-from catalog_controller import cat_controller
+from catalog_controller import CatController
 
 class addWindow(QMainWindow, Ui_mainWindow):
     """docstring for addWindow"""
@@ -29,7 +29,7 @@ class addWindow(QMainWindow, Ui_mainWindow):
         self.tree_path = os.path.join(os.getcwd(),'data')
 
         #db controller
-        self.controller = cat_controller()
+        self.controller = CatController()
 
         self.setupUi(self)
         self.addVideo_widget()
