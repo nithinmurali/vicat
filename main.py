@@ -23,11 +23,14 @@ class addWindow(QMainWindow, Ui_mainWindow):
         self.currentPath = ""
         #list of all tasks
         self.task = []
-        #final tree
-        self.tree_path = os.getcwd()
+        #final tree relative path
+        self.tree_path = os.path.join(os.getcwd(),'data')
 
         #database path
         self.db_path = ''
+
+        #db controller
+        self.controller = cat_controller()
 
         self.setupUi(self)
         self.addVideo_widget()
@@ -50,24 +53,23 @@ class addWindow(QMainWindow, Ui_mainWindow):
         self.btn_play.clicked.connect( self.handlePlayButton )
         self.btn_folder.clicked.connect( self.handleButtonChoose )
         self.btn_nxt.clicked.connect( self.handleNextbutton )
+        self.btn_add.clicked.connect( self.handleAddButton )
 
     def handleAddButton(self):
-
         if self.currentPath == "":
             return
-
         year =  self.combo_year.currentText()
         task = self.combo_task.currentText()
         ttype = self.combo_type.currentText()
         quality = self.combo_quality.currentText()
-        false = self.check_false.currentText()
         location = self.combo_location.currentText()
-        time = self.combo_time.currentText(),
+        time = self.combo_time.currentText()
 
         #validate
-        v_path = move_video(year, task, ttype, location, quality, time)
+        v_path = self.move_video(year, task, ttype, location, quality, time)
         video_data = {
             'path':v_path,
+            'year':year,
             'task':task,
             'type':ttype,
             'quality':quality,
@@ -77,10 +79,13 @@ class addWindow(QMainWindow, Ui_mainWindow):
             'pass':str(self.check_pass.isChecked()),
             'perseen':str(self.slider_seen.value())
         }
+        self.controller.add_video(video_data)
+        self.handleNextbutton()
 
 
     def move_video(self, year, task, ttype, location, quality, time):
-        hir_path = os.path.join(self.tree_path, year, task, ttype, location, quality, time)
+        hir_path = os.path.join(self.tree_path, str(year), str(task), str(ttype), str(location), str(quality), str(time))
+        print hir_path
         try:
             if not os.path.exists(hir_path):
                 os.makedirs(hir_path)
@@ -109,13 +114,14 @@ class addWindow(QMainWindow, Ui_mainWindow):
     def handleNextbutton(self):
         if len(self.pathlist)>0:
             t_path = self.pathlist.pop()
+            self.currentPath = t_path
             self.label_fileName.setText(os.path.split(t_path)[1])
             self.media.setCurrentSource(Phonon.MediaSource(t_path))
             self.media.play()
         else:
             self.label_fileName.setText("No file")
             self.media.stop()
-            self.pathlist.clear()
+            self.pathlist = []
             self.currentPath = ""
             self.media.clear()
             # TO DO show warniing
@@ -142,7 +148,7 @@ class addWindow(QMainWindow, Ui_mainWindow):
     def loadValues(self):
         self.task = ["buoy",'marker','plank','torpedo','gate','parking']
         self.location = ['IITB','Transdec']
-        self.quality = ['1','2','3','4','5']
+        self.quality = ['bad','okey','good']
         self.time = ['morning', 'evening', 'night']
         self.type = ['testing','debug']
         self.year = [ str(x) for x in range(2011,2020) ]
