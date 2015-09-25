@@ -18,13 +18,10 @@ Instructions to use
 
 TODO
 --------
-<<<<<<< HEAD
-search function
-variabel filename for copied files
-adding tags to video
-tags in form
-find files recurselvy
-=======
 * search function
 * variabel filename for copied files
->>>>>>> origin/master
+* search function
+* variabel filename for copied files
+* adding tags to video
+* tags in form
+* find files recurselvy
