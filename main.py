@@ -78,7 +78,6 @@ class addWindow(QMainWindow, Ui_mainWindow):
             'perseen':str(self.slider_seen.value())
         }
 
-        pass
 
     def move_video(self, year, task, ttype, location, quality, time):
         hir_path = os.path.join(self.tree_path, year, task, ttype, location, quality, time)
