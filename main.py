@@ -113,9 +113,10 @@ class AddWindow(QMainWindow, Ui_mainWindow):
             dialog.setFileMode(QtGui.QFileDialog.DirectoryOnly)
             if dialog.exec_() == QtGui.QDialog.Accepted:
                 self.path = dialog.selectedFiles()[0]
-                for vfile in os.listdir(self.path):
-                    if vfile.endswith(".avi") or vfile.endswith(".avi"):
-                        self.pathlist.append(os.path.join(self.path, vfile))
+                for root, subfolders, files in os.walk(self.path):
+                    for vfile in files:
+                        if vfile.split(".")[-1] in ['avi', 'mp4']:
+                            self.pathlist.append(os.path.join(self.path, vfile))
             self.handle_button_next()
             dialog.deleteLater()
 
