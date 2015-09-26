@@ -19,7 +19,6 @@ Instructions to use
 TODO
 --------
 * search function
-* variabel filename for copied files
 * search function
 * variabel filename for copied files
 * adding tags to video
