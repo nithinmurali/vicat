@@ -116,7 +116,7 @@ class AddWindow(QMainWindow, Ui_mainWindow):
                 for root, subfolders, files in os.walk(self.path):
                     for vfile in files:
                         if vfile.split(".")[-1] in ['avi', 'mp4']:
-                            self.pathlist.append(os.path.join(self.path, vfile))
+                            self.pathlist.append(os.path.join(root, vfile))
             self.handle_button_next()
             dialog.deleteLater()
 
