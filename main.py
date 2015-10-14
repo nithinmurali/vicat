@@ -55,6 +55,7 @@ class AddWindow(QMainWindow, Ui_mainWindow):
         self.btn_folder.clicked.connect(self.handle_button_choose)
         self.btn_nxt.clicked.connect(self.handle_button_next)
         self.btn_add.clicked.connect(self.handle_add_button)
+        self.start_btn.clicked.connect(self.handle_start_button)
 
     def handle_add_button(self):
         ''' add button callback '''
@@ -81,11 +82,10 @@ class AddWindow(QMainWindow, Ui_mainWindow):
             'tags':str(self.line_tags.text()),
             'false':str(self.check_false.isChecked()),
             'pass':str(self.check_pass.isChecked()),
-            'perseen':str(self.slider_seen.value())
+            'perseen':self.seen_text.text()
         }
         self.controller.add_video(video_data)
         self.handle_button_next()
-
 
     def move_video(self, year, task, ttype, location, quality, time):
         '''move the video to catalog tree, @params:video details'''
@@ -106,19 +106,16 @@ class AddWindow(QMainWindow, Ui_mainWindow):
 
     def handle_button_choose(self):
         ''' choose button callback'''
-        if self.media.state() == Phonon.PlayingState:
-            self.media.stop()
-        else:
-            dialog = QtGui.QFileDialog(self)
-            dialog.setFileMode(QtGui.QFileDialog.DirectoryOnly)
-            if dialog.exec_() == QtGui.QDialog.Accepted:
-                self.path = dialog.selectedFiles()[0]
-                for root, subfolders, files in os.walk(self.path):
-                    for vfile in files:
-                        if vfile.split(".")[-1] in ['avi', 'mp4']:
-                            self.pathlist.append(os.path.join(root, vfile))
+        dialog = QtGui.QFileDialog(self)
+        dialog.setFileMode(QtGui.QFileDialog.DirectoryOnly)
+        if dialog.exec_() == QtGui.QDialog.Accepted:
+            self.path = dialog.selectedFiles()[0]
+            for root, subfolders, files in os.walk(self.path):
+                for vfile in files:
+                    if vfile.split(".")[-1] in ['avi', 'mp4']:
+                        self.pathlist.append(os.path.join(root, vfile))
             self.handle_button_next()
-            dialog.deleteLater()
+        dialog.deleteLater()
 
     def handle_button_next(self):
         ''' callback for next button '''
@@ -156,6 +153,17 @@ class AddWindow(QMainWindow, Ui_mainWindow):
             self.media.pause()
         elif self.media.state() == Phonon.PausedState:
             self.media.play()
+
+    def handle_start_button(self):
+        if self.start_btn.text() == 'Start':
+            self.seen_start_time = self.media.currentTime()
+            self.start_btn.setText('Stop')
+        else:
+            stop_time = self.media.currentTime()
+            seen_text_txt = self.seen_text.text() + '[' + str(self.seen_start_time) + ','\
+                                + str(self.media.currentTime()) + ']'
+            self.seen_text.setText(seen_text_txt)
+            self.start_btn.setText('Start')
 
     def load_values(self):
         ''' initializes widget values '''

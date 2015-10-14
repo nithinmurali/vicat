@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>700</width>
-    <height>655</height>
+    <height>610</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,6 +20,12 @@
    <size>
     <width>700</width>
     <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>700</width>
+    <height>610</height>
    </size>
   </property>
   <property name="baseSize">
@@ -35,33 +41,17 @@
    <widget class="QLabel" name="label_seen">
     <property name="geometry">
      <rect>
-      <x>371</x>
+      <x>370</x>
       <y>320</y>
-      <width>50</width>
+      <width>40</width>
       <height>30</height>
      </rect>
     </property>
     <property name="text">
-     <string>% Seen</string>
+     <string>Seen : </string>
     </property>
     <property name="buddy">
-     <cstring>slider_seen</cstring>
-    </property>
-   </widget>
-   <widget class="QSlider" name="slider_seen">
-    <property name="geometry">
-     <rect>
-      <x>462</x>
-      <y>320</y>
-      <width>160</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="maximum">
-     <number>100</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
+     <cstring>start_btn</cstring>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_add">
@@ -90,8 +80,8 @@
    <widget class="QPushButton" name="btn_folder">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>220</y>
+      <x>30</x>
+      <y>230</y>
       <width>100</width>
       <height>27</height>
      </rect>
@@ -118,7 +108,7 @@
      <rect>
       <x>30</x>
       <y>260</y>
-      <width>98</width>
+      <width>100</width>
       <height>27</height>
      </rect>
     </property>
@@ -126,30 +116,23 @@
      <string>Play &gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_per">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>330</y>
-      <width>16</width>
-      <height>10</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>0</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_fileName">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>230</y>
-      <width>66</width>
+      <x>150</x>
+      <y>10</y>
+      <width>341</width>
       <height>17</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string/>
+    </property>
     <property name="text">
      <string>file</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QWidget" name="layoutWidget">
@@ -375,6 +358,29 @@
      </item>
     </layout>
    </widget>
+   <widget class="QLineEdit" name="seen_text">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>320</y>
+      <width>170</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="start_btn">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>320</y>
+      <width>40</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Start</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -386,7 +392,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <customwidgets>
   <customwidget>
@@ -401,7 +406,6 @@
   <tabstop>combo_quality</tabstop>
   <tabstop>check_pass</tabstop>
   <tabstop>combo_time</tabstop>
-  <tabstop>slider_seen</tabstop>
   <tabstop>check_false</tabstop>
   <tabstop>combo_location</tabstop>
   <tabstop>combo_year</tabstop>
@@ -409,22 +413,5 @@
   <tabstop>btn_add</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>slider_seen</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>label_per</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>505</x>
-     <y>358</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>437</x>
-     <y>361</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
